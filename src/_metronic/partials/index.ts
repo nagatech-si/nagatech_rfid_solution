@@ -30,7 +30,6 @@ export * from './content/portal/Portal'
 export * from './modals/create-app/Main'
 export * from './modals/invite-users/InviteUsers'
 export * from './modals/upgrade-plan/UpgradePlan'
-export * from '../../app/modules/master/sample-type/components/SampleType'
 
 // chat
 export * from './chat/ChatInner'

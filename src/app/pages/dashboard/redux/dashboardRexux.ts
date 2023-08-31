@@ -13,7 +13,6 @@ import {
 import {ICustomer} from '../../../modules/user/customer-active/model/CustomerActiveModel'
 import {Encryptor} from '../../../../_metronic/helpers/Encryptor'
 import {customerIgnore} from '../../../../setup/enc-ignore/customer-ignore-encryptor'
-import {IItem} from '../../../modules/items/master-line/model/MasterLineModel'
 
 const encyptor = new Encryptor()
 
@@ -44,8 +43,6 @@ const initialDashboard: IDashboardRedux = {
   totalRegistered: 0,
   totalShowroom: 0,
   customerData: [],
-  masterLine: [],
-  showroom: [],
 }
 
 export interface IDashboardRedux {
@@ -53,8 +50,6 @@ export interface IDashboardRedux {
   totalShowroom: number | null | undefined
   totalCustomerActive: number | null | undefined
   customerData: ICustomer[] | null | undefined
-  masterLine: IItem[] | null | undefined
-  showroom: IItem[] | null | undefined
 }
 
 export const reducer = persistReducer(
