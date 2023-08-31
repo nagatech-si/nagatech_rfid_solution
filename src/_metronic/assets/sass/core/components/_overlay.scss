@@ -1,0 +1,50 @@
+//
+// Demo
+//
+
+.overlay {
+  position: relative;
+
+  .overlay-wrapper {
+  }
+
+  .overlay-layer {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: get($overlay, bg);
+    transition: all 0.3s ease;
+    opacity: 0;
+  }
+
+  .overlay-layer-stick-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(0deg, rgba(50,50,50,0.8) 0%, rgba(50,50,50,0.5) 45%, rgba(50,50,50,0) 100%);
+    transition: all 0.3s ease;
+
+  }
+
+  &.overlay-show,
+  &.overlay-block,
+  &:hover {
+    .overlay-layer {
+      transition: all 0.3s ease;
+      opacity: 1;
+    }
+  }
+
+  &.overlay-block {
+    cursor: wait;
+  }
+}
