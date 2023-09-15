@@ -4,3 +4,5 @@ import * as Yup from 'yup'
 Yup.addMethod(Yup.string, 'stripEmptyString', function () {
   return this.transform((value) => (value === '' ? undefined : value))
 })
+
+export const alfaNumerikOnly = (message: string) => Yup.string().matches(/^[a-zA-Z0-9]*$/, message)

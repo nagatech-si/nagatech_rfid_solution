@@ -4,12 +4,18 @@ import ReactTooltip from 'react-tooltip'
 import Swal from 'sweetalert2'
 
 interface IDropdownAction {
-  handleDelete: Function
+  handleDelete?: Function
   handleUpdate?: Function
   modalName: string
+  DeleteName?: string
 }
 
-const DropdownAction: React.FC<IDropdownAction> = ({handleDelete, handleUpdate, modalName}) => {
+const DropdownAction: React.FC<IDropdownAction> = ({
+  handleDelete,
+  handleUpdate,
+  modalName,
+  DeleteName,
+}) => {
   const intl = useIntl()
   return (
     <div className='text-end'>
@@ -30,29 +36,31 @@ const DropdownAction: React.FC<IDropdownAction> = ({handleDelete, handleUpdate, 
       ) : (
         <></>
       )}
-      <button
-        type='button'
-        className='btn btn-sm btn-icon btn-light-google me-5'
-        data-tip={intl.formatMessage({id: 'DELETE'})}
-        onClick={() => {
-          Swal.fire({
-            title: intl.formatMessage({id: 'TITLE.CONFIRM'}),
-            text: intl.formatMessage({id: 'SUBTITLE.CONFIRM'}),
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            heightAuto: false,
-            confirmButtonText: intl.formatMessage({id: 'CONFIRM.TEXT'}),
-          }).then((result) => {
-            if (result.isConfirmed) {
-              handleDelete()
-            }
-          })
-        }}
-      >
-        <i className='fa fa-trash fs-4'></i>
-      </button>
+      {handleDelete ? (
+        <button
+          type='button'
+          className='btn btn-sm btn-icon btn-light-google me-5'
+          data-tip={intl.formatMessage({id: 'DELETE'})}
+          onClick={() => {
+            Swal.fire({
+              title: intl.formatMessage({id: 'TITLE.CONFIRM'}),
+              text: intl.formatMessage({id: 'SUBTITLE.CONFIRM'}, {name: DeleteName}),
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              heightAuto: false,
+              confirmButtonText: intl.formatMessage({id: 'CONFIRM.TEXT'}),
+            }).then((result) => {
+              if (result.isConfirmed) {
+                handleDelete()
+              }
+            })
+          }}
+        >
+          <i className='fa fa-trash fs-4'></i>
+        </button>
+      ) : null}
     </div>
   )
 }

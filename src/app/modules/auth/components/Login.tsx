@@ -6,6 +6,7 @@ import clsx from 'clsx'
 import {useFormik} from 'formik'
 import * as auth from '../redux/AuthRedux'
 import {login} from '../redux/AuthCRUD'
+import {useIntl} from 'react-intl'
 
 const loginSchema = Yup.object().shape({
   email: Yup.string()
@@ -19,8 +20,8 @@ const loginSchema = Yup.object().shape({
 })
 
 const initialValues = {
-  email: 'admin3',
-  password: 'admin3',
+  email: 'admin',
+  password: 'admin',
 }
 
 /*
@@ -42,23 +43,27 @@ export function Login() {
         setLoading(false)
 
         localStorage.setItem('isLogin', 'true')
-        localStorage.setItem('token', response.data.data[0].token)
-        dispatch(auth.actions.login(response.data.data[0].token))
+        localStorage.setItem('token', response.data.access_token)
+        dispatch(auth.actions.login(response.data.access_token))
         dispatch(
           auth.actions.setUser({
-            level: response.data.data[0].level,
-            nama_user: response.data.data[0].level,
-            token: response.data.data[0].token,
-            user_id: response.data.data[0].user_id,
+            level: response.data.level,
+            nama_user: response.data.user_id,
+            token: response.data.access_token,
+            user_id: response.data.user_id,
           })
         )
       } catch (error) {
+        console.log(error)
+
         setLoading(false)
         setSubmitting(false)
         setStatus('The login detail is incorrect')
       }
     },
   })
+
+  const intl = useIntl()
 
   return (
     <form
@@ -67,12 +72,6 @@ export function Login() {
       noValidate
       id='kt_login_signin_form'
     >
-      {/* begin::Heading */}
-      <div className='text-center mb-10'>
-        <h1 className='text-dark mb-3'>Sign In to AMG Catalogue</h1>
-      </div>
-      {/* begin::Heading */}
-
       {/* {formik.status ? (
         <div className='mb-lg-15 alert alert-danger'>
           <div className='alert-text font-weight-bold'>{formik.status}</div>
@@ -161,7 +160,7 @@ export function Login() {
           className='btn btn-lg btn-primary w-100 mb-5'
           disabled={formik.isSubmitting || !formik.isValid}
         >
-          {!loading && <span className='indicator-label'>Continue</span>}
+          {!loading && <span className='indicator-label'>{intl.formatMessage({id: 'LOGIN'})}</span>}
           {loading && (
             <span className='indicator-progress' style={{display: 'block'}}>
               Please wait...

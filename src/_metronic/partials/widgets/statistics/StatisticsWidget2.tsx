@@ -11,7 +11,7 @@ type Props = {
 
 const StatisticsWidget2: React.FC<Props> = ({className, title, description, avatar}) => {
   return (
-    <div className={`card ${className}`}>
+    <div className={`card ${className} shadow`}>
       {/* begin::Body */}
       <div className='card-body d-flex align-items-center pt-3 pb-0'>
         <div className='d-flex flex-column flex-grow-1 py-2 py-lg-13 me-2'>

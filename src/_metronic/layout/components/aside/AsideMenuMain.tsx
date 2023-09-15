@@ -9,12 +9,12 @@ export function AsideMenuMain() {
 
   return (
     <>
-      <AsideMenuItem
+      {/* <AsideMenuItem
         to='/dashboard'
         icon='/media/icons/duotune/art/art002.svg'
         title={intl.formatMessage({id: 'MENU.DASHBOARD'})}
         fontIcon='bi-app-indicator'
-      />
+      /> */}
       <div className='menu-item'>
         <div className='menu-content pt-8 pb-2'>
           <span className='menu-section text-muted text-uppercase fs-8 ls-1'>
@@ -39,18 +39,23 @@ export function AsideMenuMain() {
           hasBullet={true}
         />
         <AsideMenuItem
+          to='/master/item-condition'
+          title={intl.formatMessage({id: 'MASTER.ITEM.CONDITION'})}
+          hasBullet={true}
+        />
+        <AsideMenuItem
           to='/master/warehouse'
           title={intl.formatMessage({id: 'MASTER.WAREHOUSE'})}
           hasBullet={true}
         />
         <AsideMenuItem
-          to='/master/tray'
-          title={intl.formatMessage({id: 'MASTER.TRAY'})}
+          to='/master/price-tag'
+          title={intl.formatMessage({id: 'MASTER.PRICE.TAG'})}
           hasBullet={true}
         />
         <AsideMenuItem
-          to='/master/price-tag'
-          title={intl.formatMessage({id: 'MASTER.PRICE.TAG'})}
+          to='/master/tray'
+          title={intl.formatMessage({id: 'MASTER.TRAY'})}
           hasBullet={true}
         />
       </AsideMenuItemWithSub>
@@ -63,12 +68,12 @@ export function AsideMenuMain() {
         </div>
       </div>
       <AsideMenuItem
-        to='/manage/user/user-data'
+        to='/item/add'
         title={intl.formatMessage({id: 'ADD.ITEM'})}
         icon='/media/icons/duotune/communication/com006.svg'
       />
       <AsideMenuItem
-        to='/manage/user/customer-active'
+        to='/item/view'
         title={intl.formatMessage({id: 'DATA.ITEM'})}
         icon='/media/icons/duotune/abstract/abs049.svg'
       />
@@ -80,18 +85,33 @@ export function AsideMenuMain() {
         </div>
       </div>
       <AsideMenuItem
-        to='/manage/user/user-data'
+        to='/rfid/opname'
         title={intl.formatMessage({id: 'STOCK.OPNAME'})}
         icon='/media/icons/duotune/communication/com006.svg'
       />
       <AsideMenuItem
-        to='/manage/user/customer-active'
+        to='/rfid/locator'
         title={intl.formatMessage({id: 'STOCK.LOCATOR'})}
         icon='/media/icons/duotune/abstract/abs049.svg'
       />
       <AsideMenuItem
-        to='/manage/user/customer-active'
+        to='/rfid/sold-item'
         title={intl.formatMessage({id: 'STOCK.SOLD'})}
+        icon='/media/icons/duotune/abstract/abs049.svg'
+      />
+      <AsideMenuItem
+        to='/rfid/shatter-item'
+        title={intl.formatMessage({id: 'SHATTER.ITEM'})}
+        icon='/media/icons/duotune/abstract/abs049.svg'
+      />
+      <AsideMenuItem
+        to='/rfid/move-item'
+        title={intl.formatMessage({id: 'MOVE.ITEM'})}
+        icon='/media/icons/duotune/abstract/abs049.svg'
+      />
+      <AsideMenuItem
+        to='/rfid/one-tray'
+        title={intl.formatMessage({id: 'MOVE.ITEM.ONE.TRAY'})}
         icon='/media/icons/duotune/abstract/abs049.svg'
       />
       <div className='menu-item'>
@@ -102,18 +122,28 @@ export function AsideMenuMain() {
         </div>
       </div>
       <AsideMenuItem
-        to='/manage/user/user-data'
+        to='/report/item'
         title={intl.formatMessage({id: 'REPORT.ITEM'})}
         icon='/media/icons/duotune/communication/com006.svg'
       />
       <AsideMenuItem
-        to='/manage/user/customer-active'
+        to='/report/sold-item'
         title={intl.formatMessage({id: 'REPORT.STOCK.SOLD'})}
         icon='/media/icons/duotune/abstract/abs049.svg'
       />
       <AsideMenuItem
-        to='/manage/user/customer-active'
+        to='/report/stock-opname'
         title={intl.formatMessage({id: 'REPORT.STOCK.OPNAME'})}
+        icon='/media/icons/duotune/abstract/abs049.svg'
+      />
+      <AsideMenuItem
+        to='/report/shatter-item'
+        title={intl.formatMessage({id: 'REPORT.SHATTER.ITEM'})}
+        icon='/media/icons/duotune/abstract/abs049.svg'
+      />
+      <AsideMenuItem
+        to='/report/move-item'
+        title={intl.formatMessage({id: 'REPORT.MOVE.ITEM'})}
         icon='/media/icons/duotune/abstract/abs049.svg'
       />
     </>

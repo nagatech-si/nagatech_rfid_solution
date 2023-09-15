@@ -1,7 +1,7 @@
 import {Action} from '@reduxjs/toolkit'
 import {persistReducer} from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
-import {call, put, takeLatest} from 'redux-saga/effects'
+import {call, put, select, takeLatest} from 'redux-saga/effects'
 import {IGroup} from '../model/GroupModel'
 import {deleteGroup, fetchAllGroup, putGroup, sendGroup} from './GroupCRUD'
 import {DefaultResponse} from '../../../../../setup/axios/SetupAxios'
@@ -9,7 +9,8 @@ import {Encryptor} from '../../../../../_metronic/helpers/Encryptor'
 
 import Swal from 'sweetalert2'
 import hideModal from '../../../../../_metronic/helpers/ModalHandler'
-import {chainTypeIgnore} from '../../../../../setup/enc-ignore/chain-type-ignore-encryptor'
+import {INotification} from '../../../../../setup/notification/Notification'
+import {RootState} from '../../../../../setup'
 
 const encryptor = new Encryptor()
 export interface ActionWithPayload<T> extends Action {
@@ -31,16 +32,28 @@ export const actionTypes = {
   deleteGroup: '[MASTER GROUP] Delete Group',
   deleteGroupSuccess: '[MASTER GROUP] Delete Group Success',
   deleteGroupFailed: '[MASTER GROUP] Delete Group Failed',
+  setNotifiation: '[MASTER GROUP] Set Notificaiton Message',
 }
 
 const initialGroupState: IGroupRedux = {
   data: [],
   payload: null,
+  notification: {
+    success: 'Success',
+    failed: 'Failed',
+    addSuccess: 'Data Succesfully Saved!',
+    addFailed: 'Failed To Save Data, Try Again Later!',
+    deleteFailed: '',
+    deleteSuccess: '',
+    updateFailed: '',
+    updateSuccess: '',
+  },
 }
 
 export interface IGroupRedux {
   data: IGroup[] | null | undefined
   payload: IGroup | null | undefined
+  notification: INotification | null | undefined
 }
 
 export const reducer = persistReducer(
@@ -63,6 +76,10 @@ export const reducer = persistReducer(
         const data = action.payload?.payload
         return {...state, payload: data}
       }
+      case actionTypes.setNotifiation: {
+        const data = action.payload?.notification
+        return {...state, notification: data}
+      }
       default:
         return state
     }
@@ -78,7 +95,15 @@ export const actions = {
     type: actionTypes.storePrevGroupData,
     payload,
   }),
+  setNotification: (notification: INotification) => ({
+    type: actionTypes.setNotifiation,
+    payload: {
+      notification,
+    },
+  }),
 }
+
+export const getNotification = (state: RootState) => state.group.notification
 
 function* fetchGroup() {
   try {
@@ -96,10 +121,13 @@ function* fetchGroup() {
 
 function* postGroup({payload: sampleType}: ActionWithPayload<IGroup>) {
   try {
+    const notification: INotification = yield select(getNotification)
+
     yield call(() => sendGroup(sampleType!))
+
     Swal.fire({
-      title: 'Success!',
-      text: 'Group successfully sent to the server',
+      title: notification.success,
+      text: notification.addSuccess,
       icon: 'success',
       heightAuto: false,
       focusConfirm: true,
@@ -117,9 +145,10 @@ function* postGroup({payload: sampleType}: ActionWithPayload<IGroup>) {
 function* deleteGroupSaga({payload: sampleType}: ActionWithPayload<IGroup>) {
   try {
     yield call(() => deleteGroup(sampleType!))
+    const notification: INotification = yield select(getNotification)
     Swal.fire({
-      title: 'Success!',
-      text: 'Group successfully deleted from server',
+      title: notification.success,
+      text: notification.deleteSuccess,
       icon: 'success',
       heightAuto: false,
       focusConfirm: true,
@@ -136,9 +165,10 @@ function* deleteGroupSaga({payload: sampleType}: ActionWithPayload<IGroup>) {
 function* editGroupSaga({payload: sampleType}: ActionWithPayload<IGroup>) {
   try {
     yield call(() => putGroup(sampleType!))
+    const notification: INotification = yield select(getNotification)
     Swal.fire({
-      title: 'Success!',
-      text: 'Group successfully updated from server',
+      title: notification.success,
+      text: notification.updateSuccess,
       icon: 'success',
       heightAuto: false,
       focusConfirm: true,

@@ -4,6 +4,10 @@ import {PageLink, PageTitle} from '../../../_metronic/layout/core'
 import {useIntl} from 'react-intl'
 import {GroupWidget} from './group/Group'
 import {TypeWidget} from './type/Type'
+import {WarehouseWidget} from './warehouse/Warehouse'
+import {PriceTagWidget} from './price_tag/PriceTag'
+import {TrayWidget} from './tray/Tray'
+import {ItemConditionWidget} from './item_condition/ItemCondition'
 
 const masterBreadCrumbs: Array<PageLink> = [
   {
@@ -40,19 +44,25 @@ const MasterPage: React.FC = () => {
         <PageTitle breadcrumbs={masterBreadCrumbs}>
           {intl.formatMessage({id: 'MASTER.WAREHOUSE'})}
         </PageTitle>
-        <GroupWidget className='mb-5 mb-xl-8' />
+        <WarehouseWidget className='mb-5 mb-xl-8' />
       </Route>
       <Route path='/master/tray'>
         <PageTitle breadcrumbs={masterBreadCrumbs}>
           {intl.formatMessage({id: 'MASTER.TRAY'})}
         </PageTitle>
-        <GroupWidget className='mb-5 mb-xl-8' />
+        <TrayWidget className='mb-5 mb-xl-8' />
       </Route>
       <Route path='/master/price-tag'>
         <PageTitle breadcrumbs={masterBreadCrumbs}>
           {intl.formatMessage({id: 'MASTER.PRICE.TAG'})}
         </PageTitle>
-        <GroupWidget className='mb-5 mb-xl-8' />
+        <PriceTagWidget className='mb-5 mb-xl-8' />
+      </Route>
+      <Route path='/master/item-condition'>
+        <PageTitle breadcrumbs={masterBreadCrumbs}>
+          {intl.formatMessage({id: 'MASTER.ITEM.CONDITION'})}
+        </PageTitle>
+        <ItemConditionWidget className='mb-5 mb-xl-8' />
       </Route>
 
       <Redirect from='/master' exact={true} to='/master/group' />

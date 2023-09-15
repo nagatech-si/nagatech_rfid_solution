@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import {FC} from 'react'
 import {shallowEqual, useSelector} from 'react-redux'
-import {Link} from 'react-router-dom'
 import {UserModel} from '../../../../app/modules/auth/models/UserModel'
 import {RootState} from '../../../../setup'
 import {Languages} from './Languages'
@@ -9,6 +8,7 @@ import * as auth from '../../../../app/modules/auth/redux/AuthRedux'
 import {useDispatch} from 'react-redux'
 import {toAbsoluteUrl} from '../../../helpers'
 import {IProfile} from '../../../../app/modules/accounts/model/ProfileModel'
+import {useIntl} from 'react-intl'
 
 const HeaderUserMenu: FC = () => {
   const user: UserModel = useSelector<RootState>(({auth}) => auth.user, shallowEqual) as UserModel
@@ -18,6 +18,8 @@ const HeaderUserMenu: FC = () => {
   const logout = () => {
     dispatch(auth.actions.logout())
   }
+
+  const intl = useIntl()
 
   return (
     <div
@@ -29,7 +31,7 @@ const HeaderUserMenu: FC = () => {
           <div className='symbol symbol-50px me-5'>
             <img
               alt='Logo'
-              src={profile[0]?.logo}
+              src={profile[0]?.logo ?? '-'}
               onError={({currentTarget}) => {
                 currentTarget.onerror = null // prevents looping
                 currentTarget.src = toAbsoluteUrl('/media/svg/unitedpalms/Image.svg')
@@ -50,25 +52,25 @@ const HeaderUserMenu: FC = () => {
 
       <div className='separator my-2'></div>
 
-      <div className='menu-item px-5'>
+      {/* <div className='menu-item px-5'>
         <Link to={'/crafted/account/overview'} className='menu-link px-5'>
           My Profile
         </Link>
-      </div>
+      </div> */}
 
       <div className='separator my-2'></div>
 
       <Languages />
 
-      <div className='menu-item px-5 my-1'>
+      {/* <div className='menu-item px-5 my-1'>
         <Link to='/crafted/account/settings' className='menu-link px-5'>
           Account Settings
         </Link>
-      </div>
+      </div> */}
 
       <div className='menu-item px-5'>
         <a onClick={logout} className='menu-link px-5'>
-          Sign Out
+          {intl.formatMessage({id: 'LOGOUT'})}
         </a>
       </div>
     </div>

@@ -7,6 +7,7 @@ import {DefaultTitle} from '../header/page-title/DefaultTitle'
 import {RootState} from '../../../../setup'
 import {shallowEqual, useDispatch, useSelector} from 'react-redux'
 import * as toolbarRedux from './ToolbarRedux'
+import {useIntl} from 'react-intl'
 
 const Toolbar1: FC = () => {
   const {classes} = useLayout()
@@ -15,7 +16,11 @@ const Toolbar1: FC = () => {
     ({toolbar}) => toolbar.modalName,
     shallowEqual
   ) as string
-
+  const focusName: string = useSelector<RootState>(
+    ({toolbar}) => toolbar.focusName,
+    shallowEqual
+  ) as string
+  const intl = useIntl()
   return (
     <div className='toolbar' id='kt_toolbar'>
       {/* begin::Container */}
@@ -36,9 +41,16 @@ const Toolbar1: FC = () => {
               data-bs-toggle='modal'
               data-bs-target={`#${modalName}`}
               id='kt_toolbar_primary_button'
-              onClick={() => dispatch(toolbarRedux.actions.SetCreateModalActive(true))}
+              onClick={() => {
+                if (focusName != null) {
+                  setTimeout(() => {
+                    document.getElementsByName(focusName)[0].focus()
+                  }, 500)
+                }
+                dispatch(toolbarRedux.actions.SetCreateModalActive(true))
+              }}
             >
-              Create
+              {intl.formatMessage({id: 'CREATE'})}
             </a>
             {/* end::Button */}
           </div>

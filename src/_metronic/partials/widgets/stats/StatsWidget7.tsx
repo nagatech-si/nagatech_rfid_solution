@@ -13,7 +13,7 @@ const StatsWidget7: React.FC<Props> = ({className, innerPadding = ''}) => {
   const [option, setOption] = useState('1')
   const [fleet, setFleet] = useState('1')
   return (
-    <div className={`card ${className}`}>
+    <div className={`card ${className} shadow`}>
       {/* begin::Body */}
       <div className={`card-body ${innerPadding}`}>
         {/* begin::Title */}

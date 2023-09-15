@@ -10,7 +10,7 @@ import {
   fetchLastShowroom,
   fetchTopCustomer,
 } from './dashboardCRUD'
-import {ICustomer} from '../../../modules/user/customer-active/model/CustomerActiveModel'
+
 import {Encryptor} from '../../../../_metronic/helpers/Encryptor'
 import {customerIgnore} from '../../../../setup/enc-ignore/customer-ignore-encryptor'
 
@@ -42,14 +42,12 @@ const initialDashboard: IDashboardRedux = {
   totalCustomerActive: 0,
   totalRegistered: 0,
   totalShowroom: 0,
-  customerData: [],
 }
 
 export interface IDashboardRedux {
   totalRegistered: number | null | undefined
   totalShowroom: number | null | undefined
   totalCustomerActive: number | null | undefined
-  customerData: ICustomer[] | null | undefined
 }
 
 export const reducer = persistReducer(
@@ -60,45 +58,13 @@ export const reducer = persistReducer(
   },
   (state: IDashboardRedux = initialDashboard, action: ActionWithPayload<IDashboardRedux>) => {
     switch (action.type) {
-      case actionTypes.fetchAllRegisteredSuccess: {
-        const data = action.payload?.totalRegistered
-        const masterLine = action.payload?.masterLine
-        return {...state, totalRegistered: data, masterLine}
-      }
-      case actionTypes.fetchAllCustomerActiveSuccess: {
-        const data = action.payload?.totalCustomerActive
-        return {...state, totalCustomerActive: data}
-      }
-      case actionTypes.fetchAllShowroomSuccess: {
-        const data = action.payload?.totalShowroom
-        return {...state, totalShowroom: data}
-      }
-      case actionTypes.fetchAllTopCustomerSuccess: {
-        const data = action.payload?.customerData
-        return {...state, customerData: data}
-      }
-      case actionTypes.fetchLastShowroomSuccess: {
-        const showroom = action.payload?.showroom
-        return {...state, showroom}
-      }
-
       default:
         return state
     }
   }
 )
 
-export const actions = {
-  fetchRegistered: () => {
-    console.log('DI ACTION')
-
-    return {type: actionTypes.fetchAllRegistered}
-  },
-  fetchShowroom: () => ({type: actionTypes.fetchAllShowroom}),
-  fetchAllCustomerActive: () => ({type: actionTypes.fetchAllCustomerActive}),
-  fetchTopCustomer: () => ({type: actionTypes.fetchAllTopCustomer}),
-  fetchLastShowroom: () => ({type: actionTypes.fetchLastShowroom}),
-}
+export const actions = {}
 
 function* fetchRegisteredSaga() {
   try {

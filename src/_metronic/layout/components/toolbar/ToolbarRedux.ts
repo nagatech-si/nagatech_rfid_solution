@@ -8,21 +8,24 @@ export interface ActionWithPayload<T> extends Action {
 
 export const actionTypes = {
   SetModalName: '[Toolbar] Set Modal Name',
+  SetFocusName: '[Toolbar] Set Focus Name',
   SetCreateMode: '[Toolbar] Set Create Mode',
 }
 
 const initialAuthState: IToolbarState = {
   modalName: null,
   createMode: true,
+  focusName: null,
 }
 
 export interface IToolbarState {
   modalName?: string | null | undefined
+  focusName?: string | null | undefined
   createMode: boolean | null | undefined
 }
 
 export const reducer = persistReducer(
-  {storage, key: 'v100-amg_catalogue-toolbar', whitelist: ['modalName', 'createMode']},
+  {storage, key: 'v100-amg_catalogue-toolbar', whitelist: ['modalName', 'createMode', 'focusName']},
   (state: IToolbarState = initialAuthState, action: ActionWithPayload<IToolbarState>) => {
     switch (action.type) {
       case actionTypes.SetModalName: {
@@ -31,6 +34,10 @@ export const reducer = persistReducer(
 
       case actionTypes.SetCreateMode: {
         return {...state, createMode: action.payload?.createMode ?? false}
+      }
+
+      case actionTypes.SetFocusName: {
+        return {...state, focusName: action.payload?.focusName}
       }
 
       default:
@@ -43,6 +50,10 @@ export const actions = {
   SetModalToolbarName: (modalName: string) => ({
     type: actionTypes.SetModalName,
     payload: {modalName},
+  }),
+  SetFocusName: (focusName: string) => ({
+    type: actionTypes.SetFocusName,
+    payload: {focusName},
   }),
   SetCreateModalActive: (createMode: boolean) => ({
     type: actionTypes.SetCreateMode,

@@ -12,7 +12,7 @@ type Props = {
 
 const MixedWidget5: React.FC<Props> = ({className, time, image, title, description}) => {
   return (
-    <div className={`card ${className}`}>
+    <div className={`card ${className} shadow`}>
       {/* begin::Body */}
       <div className='card-body d-flex flex-column pb-10 pb-lg-15'>
         <div className='flex-grow-1'>

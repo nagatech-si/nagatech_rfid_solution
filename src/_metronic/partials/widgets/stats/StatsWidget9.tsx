@@ -23,7 +23,7 @@ const StatsWidget9: React.FC<Props> = ({className, innerPadding = '', children})
   }, [])
 
   return (
-    <div className={`card ${className}`}>
+    <div className={`card ${className} shadow`}>
       {/* begin::Body */}
       <div className={`card-body ${innerPadding}`}>
         <div

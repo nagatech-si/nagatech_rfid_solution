@@ -4,7 +4,8 @@ import {AuthModel} from '../models/AuthModel'
 const API_URL = process.env.REACT_APP_API_URL
 
 export const GET_USER_BY_ACCESSTOKEN_URL = `${API_URL}/verify_token`
-export const LOGIN_URL = `${API_URL}/user/login-user-v2`
+export const LOGIN_URL = `${API_URL}/auth/login`
+export const LOGOUT_URL = `${API_URL}/auth/logout`
 export const REGISTER_URL = `${API_URL}/register`
 export const REQUEST_PASSWORD_URL = `${API_URL}/forgot_password`
 
@@ -13,6 +14,12 @@ export function login(user_id: string, password: string) {
   return axios.post(LOGIN_URL, {
     user_id: user_id,
     password: password,
+  })
+}
+export function logout(user_id: string) {
+  return axios.post(LOGOUT_URL, {
+    user_id: user_id,
+    refresh_token: 'admin',
   })
 }
 

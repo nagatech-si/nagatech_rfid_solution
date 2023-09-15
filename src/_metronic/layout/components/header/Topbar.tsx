@@ -30,7 +30,7 @@ const Topbar: FC = () => {
           data-kt-menu-flip='bottom'
         >
           <img
-            src={profile[0]?.logo}
+            src={profile[0]?.logo ?? '-'}
             onError={({currentTarget}) => {
               currentTarget.onerror = null // prevents looping
               currentTarget.src = toAbsoluteUrl('/media/svg/unitedpalms/Image.svg')

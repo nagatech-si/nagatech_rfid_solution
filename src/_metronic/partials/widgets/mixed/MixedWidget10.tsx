@@ -31,7 +31,7 @@ const MixedWidget10: React.FC<Props> = ({className, chartColor, chartHeight}) =>
   }, [chartRef])
 
   return (
-    <div className={`card ${className}`}>
+    <div className={`card ${className} shadow`}>
       {/* begin::Body */}
       <div className='card-body d-flex flex-column p-0'>
         {/* begin::Stats */}

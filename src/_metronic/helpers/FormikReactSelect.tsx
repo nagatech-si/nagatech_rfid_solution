@@ -72,6 +72,8 @@ const FormikReactSelect: FC<Props> = (props) => {
       onChange={(val) => {
         //here I used explicit typing but there maybe a better way to type the value.
         const _val = val as MyOption[] | MyOption
+        console.log(_val)
+
         const isArray = Array.isArray(_val)
         if (isArray) {
           const values = _val.map((o) => o.value)
@@ -83,7 +85,11 @@ const FormikReactSelect: FC<Props> = (props) => {
           if (props.handleChange) {
             props.handleChange(_val, false)
           }
-          setFieldValue(name, _val.value)
+          if (_val === null) {
+            setFieldValue(name, '')
+          } else {
+            setFieldValue(name, _val?.value)
+          }
         }
       }}
     />

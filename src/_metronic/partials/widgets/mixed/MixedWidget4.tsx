@@ -15,7 +15,7 @@ type Props = {
 
 const MixedWidget4: React.FC<Props> = ({className, color, image, title, date, progress}) => {
   return (
-    <div className={`card ${className}`}>
+    <div className={`card ${className} shadow`}>
       {/* begin::Body */}
       <div className='card-body'>
         {/* begin::Heading */}

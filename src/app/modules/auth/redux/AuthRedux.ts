@@ -1,9 +1,10 @@
 import {Action} from '@reduxjs/toolkit'
 import {persistReducer} from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
-import {put, takeLatest} from 'redux-saga/effects'
+import {call, put, select, takeLatest} from 'redux-saga/effects'
 import {UserModel} from '../models/UserModel'
-import {getUserLoginStatus} from './AuthCRUD'
+import {getUserLoginStatus, logout} from './AuthCRUD'
+import {RootState} from '../../../../setup'
 
 export interface ActionWithPayload<T> extends Action {
   payload?: T
@@ -81,11 +82,19 @@ export const actions = {
 }
 
 export function* saga() {
+  yield takeLatest(actionTypes.SetUser, function* setUserSaga() {
+    const userID = yield select((state: RootState) => state.auth.user)
+    localStorage.setItem('USER', JSON.stringify(userID))
+  })
+
   yield takeLatest(actionTypes.Login, function* loginSaga() {
     yield put(actions.requestUser())
   })
 
-  yield takeLatest(actionTypes.Logout, function* loginSaga() {
+  yield takeLatest(actionTypes.Logout, function* logoutSaga() {
+    const userID: UserModel = JSON.parse(localStorage.getItem('USER') ?? '{}')
+
+    yield call(() => logout(userID.user_id))
     localStorage.removeItem('token')
     localStorage.removeItem('isLogin')
     yield

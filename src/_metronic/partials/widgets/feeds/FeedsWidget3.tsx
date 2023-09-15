@@ -9,7 +9,7 @@ type Props = {
 
 const FeedsWidget3: React.FC<Props> = ({className}) => {
   return (
-    <div className={`card ${className}`}>
+    <div className={`card ${className} shadow`}>
       {/* begin::Body */}
       <div className='card-body pb-0'>
         {/* begin::Header */}

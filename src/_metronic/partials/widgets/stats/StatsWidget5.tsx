@@ -10,7 +10,7 @@ type Props = {
 
 const StatsWidget5: React.FC<Props> = ({className, innerPadding = ''}) => {
   return (
-    <div className={`card ${className}`}>
+    <div className={`card ${className} shadow`}>
       {/* begin::Body */}
       <div className='card-body'>
         {/* begin::Section */}

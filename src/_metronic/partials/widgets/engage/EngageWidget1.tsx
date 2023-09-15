@@ -27,7 +27,7 @@ const EngageWidget1: React.FC<Props> = ({
   }
 
   return (
-    <div className={`card ${className}`}>
+    <div className={`card ${className} shadow`}>
       <div
         className={`card-body card-rounded p-0 d-flex bg-${bgColor}`}
         style={{backgroundColor: bgHex}}

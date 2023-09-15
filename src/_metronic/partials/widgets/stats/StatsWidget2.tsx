@@ -41,7 +41,7 @@ const StatsWidget2: React.FC<Props> = ({className, innerPadding = ''}) => {
   }
 
   return (
-    <div className={`card ${className}`}>
+    <div className={`card ${className} shadow`}>
       {/* begin::Header */}
       <div className='card-header align-items-center border-0 mt-5'>
         <h3 className='card-title align-items-start flex-column'>

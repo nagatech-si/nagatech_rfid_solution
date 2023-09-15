@@ -1,7 +1,7 @@
 import {Action} from '@reduxjs/toolkit'
 import {persistReducer} from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
-import {call, put, takeLatest} from 'redux-saga/effects'
+import {call, put, select, takeLatest} from 'redux-saga/effects'
 import {IType} from '../model/TypeModel'
 import {deleteType, fetchAllType, putType, sendType} from './TypeCRUD'
 import {DefaultResponse} from '../../../../../setup/axios/SetupAxios'
@@ -9,6 +9,8 @@ import {Encryptor} from '../../../../../_metronic/helpers/Encryptor'
 
 import Swal from 'sweetalert2'
 import hideModal from '../../../../../_metronic/helpers/ModalHandler'
+import {INotification} from '../../../../../setup/notification/Notification'
+import {getNotification} from '../../group/redux/GroupRedux'
 
 const encryptor = new Encryptor()
 export interface ActionWithPayload<T> extends Action {
@@ -96,9 +98,10 @@ function* fetchType() {
 function* postType({payload: sampleType}: ActionWithPayload<IType>) {
   try {
     yield call(() => sendType(sampleType!))
+    const notification: INotification = yield select(getNotification)
     Swal.fire({
-      title: 'Success!',
-      text: 'Type successfully sent to the server',
+      title: notification.success,
+      text: notification.addSuccess,
       icon: 'success',
       heightAuto: false,
       focusConfirm: true,
@@ -116,9 +119,10 @@ function* postType({payload: sampleType}: ActionWithPayload<IType>) {
 function* deleteTypeSaga({payload: sampleType}: ActionWithPayload<IType>) {
   try {
     yield call(() => deleteType(sampleType!))
+    const notification: INotification = yield select(getNotification)
     Swal.fire({
-      title: 'Success!',
-      text: 'Type successfully deleted from server',
+      title: notification.success,
+      text: notification.deleteSuccess,
       icon: 'success',
       heightAuto: false,
       focusConfirm: true,
@@ -135,9 +139,10 @@ function* deleteTypeSaga({payload: sampleType}: ActionWithPayload<IType>) {
 function* editTypeSaga({payload: sampleType}: ActionWithPayload<IType>) {
   try {
     yield call(() => putType(sampleType!))
+    const notification: INotification = yield select(getNotification)
     Swal.fire({
-      title: 'Success!',
-      text: 'Type successfully updated from server',
+      title: notification.success,
+      text: notification.updateSuccess,
       icon: 'success',
       heightAuto: false,
       focusConfirm: true,

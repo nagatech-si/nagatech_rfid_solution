@@ -42,7 +42,7 @@ const StatisticsWidget4: React.FC<Props> = ({className, svgIcon, color, change, 
   }, [chartRef, color])
 
   return (
-    <div className={`card ${className}`}>
+    <div className={`card ${className} shadow`}>
       {/* begin::Body */}
       <div className='card-body p-0'>
         <div className='d-flex flex-stack card-p flex-grow-1'>

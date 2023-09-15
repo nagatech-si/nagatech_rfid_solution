@@ -17,6 +17,9 @@ import {MetronicI18nProvider} from './_metronic/i18n/Metronici18n'
 //react-bootstrap-table
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css'
 
+//react-date-range
+import 'react-datepicker/dist/react-datepicker.css'
+
 /**
  * TIP: Replace this style import with dark styles to enable dark mode
  *

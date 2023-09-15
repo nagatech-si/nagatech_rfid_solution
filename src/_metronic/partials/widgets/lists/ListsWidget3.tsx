@@ -9,7 +9,7 @@ type Props = {
 
 const ListsWidget3: React.FC<Props> = ({className}) => {
   return (
-    <div className={`card ${className}`}>
+    <div className={`card ${className} shadow`}>
       {/* begin::Header */}
       <div className='card-header border-0'>
         <h3 className='card-title fw-bolder text-dark'>Todo</h3>

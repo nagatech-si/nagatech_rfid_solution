@@ -3,15 +3,14 @@ import React, {useEffect} from 'react'
 import {ColumnDescription} from 'react-bootstrap-table-next'
 import {useDispatch, useSelector} from 'react-redux'
 import * as toolbar from '../../../../_metronic/layout/components/toolbar/ToolbarRedux'
-import * as sampleTypeRedux from './redux/GroupRedux'
+import * as groupRedux from './redux/GroupRedux'
 import * as toolbarRedux from '../../../../_metronic/layout/components/toolbar/ToolbarRedux'
 import {DropdownAction} from '../../../../_metronic/layout/components/ActionDropdown'
 import {RootState} from '../../../../setup'
 import {IGroup} from './model/GroupModel'
 import {GlobalTable} from '../../../component/GlobalTable'
 import {useIntl} from 'react-intl'
-import {GroupModal} from './components/GroupModal'
-import {KTSVG} from '../../../../_metronic/helpers'
+import useNotification from '../../../../setup/notification/Notification'
 
 type Props = {
   className: string
@@ -20,11 +19,16 @@ type Props = {
 const GroupWidget: React.FC<Props> = ({className}) => {
   const dispatch = useDispatch()
   const data: IGroup[] = useSelector<RootState>(({group}) => group.data) as IGroup[]
+  const intl = useIntl()
+  const notifications = useNotification()
   useEffect(() => {
     dispatch(toolbar.actions.SetModalToolbarName('kt_modal_group'))
-    dispatch(sampleTypeRedux.actions.fetchAllGroup())
+    dispatch(toolbar.actions.SetFocusName('kode_group'))
+    dispatch(groupRedux.actions.fetchAllGroup())
+    dispatch(groupRedux.actions.setNotification(notifications))
+    // eslint-disable-next-line
   }, [dispatch])
-  const intl = useIntl()
+
   const columns: ColumnDescription[] = [
     {
       dataField: 'kode_group',
@@ -54,13 +58,17 @@ const GroupWidget: React.FC<Props> = ({className}) => {
       formatter: (_: any, values: IGroup, index: number) => {
         return (
           <DropdownAction
+            DeleteName={intl.formatMessage({id: 'GROUP'}) + ' ' + values.kode_group}
             modalName='kt_modal_group'
             handleDelete={() => {
-              dispatch(sampleTypeRedux.actions.deleteGroup(values))
+              dispatch(groupRedux.actions.deleteGroup(values))
             }}
             handleUpdate={() => {
+              setTimeout(() => {
+                document.getElementsByName('nama_group')[0].focus()
+              }, 500)
               dispatch(toolbarRedux.actions.SetCreateModalActive(false))
-              dispatch(sampleTypeRedux.actions.setEditGroup(values))
+              dispatch(groupRedux.actions.setEditGroup(values))
             }}
           />
         )
@@ -69,7 +77,7 @@ const GroupWidget: React.FC<Props> = ({className}) => {
   ]
 
   return (
-    <div className={`card ${className}`}>
+    <div className={`card ${className} shadow`}>
       {/* begin::Body */}
       <div className='card-body p-10'>
         {/* begin::Table container */}

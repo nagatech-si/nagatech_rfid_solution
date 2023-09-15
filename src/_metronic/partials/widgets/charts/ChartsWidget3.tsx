@@ -30,7 +30,7 @@ const ChartsWidget3: React.FC<Props> = ({className}) => {
   }, [chartRef])
 
   return (
-    <div className={`card ${className}`}>
+    <div className={`card ${className} shadow`}>
       {/* begin::Header */}
       <div className='card-header border-0 pt-5'>
         <h3 className='card-title align-items-start flex-column'>

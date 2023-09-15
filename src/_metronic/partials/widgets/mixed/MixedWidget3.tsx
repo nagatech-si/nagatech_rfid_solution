@@ -34,7 +34,7 @@ const MixedWidget3: React.FC<Props> = ({className, chartColor, chartHeight}) => 
   }, [chartRef])
 
   return (
-    <div className={`card ${className}`}>
+    <div className={`card ${className} shadow`}>
       {/* begin::Header  */}
       <div className={`card-header border-0 bg-${chartColor} py-5`}>
         <h3 className='card-title fw-bolder text-white'>Sales Progress</h3>

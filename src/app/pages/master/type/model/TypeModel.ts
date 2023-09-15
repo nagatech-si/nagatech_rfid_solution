@@ -3,7 +3,6 @@ export interface IType {
   kode_jenis: string
   nama_jenis: string
   kode_group: string
-  status: string
 }
 
 export const TypeInitValue: IType = {
@@ -11,5 +10,4 @@ export const TypeInitValue: IType = {
   kode_group: 'KDGRP',
   kode_jenis: 'KDJNS',
   nama_jenis: 'NMJNS',
-  status: 'OPEN',
 }

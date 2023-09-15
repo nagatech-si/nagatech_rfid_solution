@@ -41,7 +41,7 @@ const StatisticsWidget3: React.FC<Props> = ({className, title, description, chan
   }, [chartRef])
 
   return (
-    <div className={`card ${className}`}>
+    <div className={`card ${className} shadow`}>
       {/* begin::Body */}
       <div className='card-body d-flex flex-column p-0'>
         <div className='d-flex flex-stack flex-grow-1 card-p'>
