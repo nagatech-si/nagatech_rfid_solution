@@ -353,5 +353,14 @@
   "LOGIN": "Masuk",
   "LOGOUT": "Keluar",
   "SIGN.IN": "Masuk",
-  "SIGN.OUT": "Keluar"
+  "SIGN.OUT": "Keluar",
+  "ITEM.LOCATOR.FAILED": "Gagal menginisialisasi Pencari Barang, coba lagi nanti.",
+  "ITEM.LOCATOR.READY": "Pencari Barang Siap",
+  "ITEM.LOCATOR.TEXT": "Silakan gunakan Handheld dan pilih menu Pencari Barang untuk mulai mencari barang",
+  "MOVE.ITEM.READY": "Pindah Barang Siap",
+  "MOVE.ITEM.TEXT": "Silakan gunakan Handheld dan pilih menu Pindah barang untuk mulai memindahkan barang",
+  "SHATTER.ITEM.READY": "Hancur Barang Siap",
+  "SHATTER.ITEM.TEXT": "Silakan gunakan Handheld dan pilih menu Hancur Barang untuk mulai menghancurkan barang",
+  "SOLD.ITEM.READY": "Penjualan Barang Siap",
+  "SOLD.ITEM.TEXT": "Silakan gunakan Handheld dan pilih menu Penjualan Barang untuk mulai menjual barang"
 }

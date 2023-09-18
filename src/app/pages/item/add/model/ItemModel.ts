@@ -1,5 +1,6 @@
 export interface IItem {
   _id: string
+  kode_barcode?: string
   kode_group?: string
   kode_jenis?: string
   kode_toko?: string
@@ -67,4 +68,11 @@ export const ItemInitValue: IItem = {
   stock_on_hand: 0,
   kode_intern: 'LG',
   gambar_barang: '',
+}
+
+export type IIResponseSocketTag = {
+  error: string
+  message: string
+  kode_barcode: string
+  user_id: string
 }

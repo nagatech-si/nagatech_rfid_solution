@@ -24,9 +24,10 @@ import {b64toBlob} from '../../../../_metronic/helpers/imageHelper'
 import {putItem, sendItem} from './redux/ItemCRUD'
 import Swal from 'sweetalert2'
 import hideModal from '../../../../_metronic/helpers/ModalHandler'
-import {DropdownBarangAction} from '../../../../_metronic/layout/components/ActionDropdownBarang'
 import {ShowImageModal} from './components/showImageModal'
 import {EditItemModal} from './components/editItemModal'
+import {prosesTagId} from '../../../../_metronic/helpers/auto_tag'
+import {Socket, io} from 'socket.io-client'
 
 type Props = {
   className: string
@@ -39,11 +40,16 @@ const ItemWidget: React.FC<Props> = ({className}) => {
   const typeDatas: IType[] = useSelector<RootState>(({type}) => type.data) as IType[]
   const trayDatas: IItem[] = useSelector<RootState>(({tray}) => tray.data) as IItem[]
   const [complete, setComplete] = useState(false)
-  const [editMode, setEditMode] = useState(false)
+  const [editMode] = useState(false)
   const [initialValues, setInitialValues] = useState(ItemInitValue)
+  const serverUrl = process.env.REACT_APP_SOCKET_URL ?? '-'
+  const socket: Socket = io(serverUrl)
+  const [duplicate, setDuplicate] = useState(false)
+
   useEffect(() => {
     dispatch(toolbar.actions.SetModalToolbarName('EMPTY'))
     dispatch(toolbar.actions.SetFocusName('nama_barang'))
+    dispatch(toolbar.actions.SetCreateModalActive(true))
     dispatch(groupRedux.actions.fetchAllGroup())
     dispatch(typeRedux.actions.fetchAllType())
     dispatch(trayRedux.actions.fetchAllTray())
@@ -53,7 +59,7 @@ const ItemWidget: React.FC<Props> = ({className}) => {
   const columns: ColumnDescription[] = [
     {
       dataField: 'kode_barcode',
-      text: intl.formatMessage({id: 'BASE.CODE'}, {name: intl.formatMessage({id: 'BARCODE'})}),
+      text: intl.formatMessage({id: 'BARCODE'}),
       sort: true,
     },
     {
@@ -108,7 +114,7 @@ const ItemWidget: React.FC<Props> = ({className}) => {
     },
     {
       dataField: 'stock_on_hand',
-      text: intl.formatMessage({id: 'PRINT.RATE'}),
+      text: intl.formatMessage({id: 'STOCK.ONHAND'}),
       sort: true,
     },
     {
@@ -132,34 +138,23 @@ const ItemWidget: React.FC<Props> = ({className}) => {
       headerAlign: 'right',
       formatter: (_: any, values: IItem, index: number) => {
         return (
-          <DropdownBarangAction
-            DeleteName={intl.formatMessage({id: 'TRAY'}) + ' ' + values.kode_baki}
-            modalName='kt_modal_edit_item'
-            modalDuplicateName='kt_modal_item'
-            modalImageName='kt_modal_gambar_barang'
-            handleUpdate={() => {
-              setInitialValues({
-                ...values,
-                kode_jenis: values.kode_dept,
-                kode_baki: values.kode_toko,
-              })
-              setEditMode(true)
-            }}
-            handleImage={() => {
+          <button
+            type='button'
+            data-bs-toggle='modal'
+            data-bs-target={`#kt_modal_edit_item`}
+            data-tip={intl.formatMessage({id: 'DUPLICATE'}, {name: ''})}
+            className='btn btn-secondary btn-icon w-100 me-5 mb-5'
+            onClick={() => {
+              setDuplicate(true)
               setInitialValues({
                 ...values,
                 kode_jenis: values.kode_dept,
                 kode_baki: values.kode_toko,
               })
             }}
-            handleDuplicate={() => {
-              setInitialValues({
-                ...values,
-                kode_jenis: values.kode_dept,
-                kode_baki: values.kode_toko,
-              })
-            }}
-          />
+          >
+            <i className='bi bi-clipboard-check-fill fs-4'></i>
+          </button>
         )
       },
     },
@@ -169,25 +164,42 @@ const ItemWidget: React.FC<Props> = ({className}) => {
     try {
       if (editMode) {
         await putItem(values)
+        hideModal()
       } else {
-        var publicURL = await uploadImage(
-          b64toBlob(values.gambar_barang),
-          `barang/${values.kadar_cetak + values.kadar + values.kode_group}.png`
-        )
-        values.gambar_barang = publicURL
+        if (!duplicate) {
+          var publicURL = await uploadImage(
+            b64toBlob(values.gambar_barang),
+            `barang/${values.kadar_cetak + values.kadar + values.kode_group}.png`
+          )
+          values.gambar_barang = publicURL
+        }
         values.tag_id = '-'
         var response = await sendItem(values)
         dispatch(itemRedux.actions.saveItem(response.data))
+        prosesTagId(
+          response.data[response.data.length - 1].kode_barcode ?? '-',
+          socket,
+          dispatch,
+          values.kode_baki ?? '-'
+        )
+        hideModal()
+        Swal.fire({
+          title: 'INFORMASI !',
+          text: 'Harap Scan Tag id',
+          icon: 'success',
+          heightAuto: false,
+          showCloseButton: false,
+          allowOutsideClick: false,
+          confirmButtonText: 'Tutup Tag ID',
+          showConfirmButton: false,
+          focusConfirm: true,
+        }).then(async (response) => {
+          if (response.isConfirmed || response.isDismissed) {
+            socket?.off('edit-tag')
+            socket?.disconnect()
+          }
+        })
       }
-      hideModal()
-      Swal.fire({
-        title: 'INFORMASI !',
-        text: 'Harap Scan Tag id',
-        icon: 'success',
-        heightAuto: false,
-        confirmButtonText: 'Tutup Tag ID',
-        focusConfirm: true,
-      })
     } catch (error) {
       console.log(error)
     }

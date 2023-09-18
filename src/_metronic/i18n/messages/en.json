@@ -353,5 +353,14 @@
   "LOGIN": "Login",
   "LOGOUT": "Logout",
   "SIGN.IN": "Sign In",
-  "SIGN.OUT": "Sign Out"
+  "SIGN.OUT": "Sign Out",
+  "ITEM.LOCATOR.FAILED": "Item Locator failed to initialize, Try again later..",
+  "ITEM.LOCATOR.READY": "Item Locator Ready",
+  "ITEM.LOCATOR.TEXT": "Please use the Handheld and select the Pencari Barang menu to start searching for items",
+  "MOVE.ITEM.READY": "Move Item Ready",
+  "MOVE.ITEM.TEXT": "Please use Handheld and select the Pindah barang menu to start move items",
+  "SHATTER.ITEM.READY": "Shatter Item Ready",
+  "SHATTER.ITEM.TEXT": "Please use Handheld and select the Hancur Barang menu to start destroying items",
+  "SOLD.ITEM.READY": "Selling Item Ready",
+  "SOLD.ITEM.TEXT": "Please use Handheld and select the Penjualan Barang menu to start selling items"
 }

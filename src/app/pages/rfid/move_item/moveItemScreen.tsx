@@ -108,8 +108,8 @@ const MoveItemWidget: React.FC<Props> = ({className}) => {
       setMoveItem(response.data)
     }
     Swal.fire({
-      title: 'Pindah Barang Siap',
-      text: 'Silahkan Gunakan Handheld dan pilih menu Pindah Barang untuk mulai menghancur barang',
+      title: intl.formatMessage({id: 'MOVE.ITEM.READY'}),
+      text: intl.formatMessage({id: 'MOVE.ITEM.TEXT'}),
       icon: 'info',
       allowEscapeKey: false,
       allowOutsideClick: false,

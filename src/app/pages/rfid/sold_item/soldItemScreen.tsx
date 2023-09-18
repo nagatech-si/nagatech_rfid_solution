@@ -152,8 +152,8 @@ const SoldItemWidget: React.FC<Props> = ({className}) => {
 
   const handleSubmit = (values: IOpname, action: FormikHelpers<IOpname>) => {
     Swal.fire({
-      title: 'Penjualan Barang Siap',
-      text: 'Silahkan Gunakan Handheld dan pilih menu Sold Item untuk mulai menjual barang',
+      title: intl.formatMessage({id: 'SOLD.ITEM.READY'}),
+      text: intl.formatMessage({id: 'SOLD.ITEM.TEXT'}),
       icon: 'info',
       allowEscapeKey: false,
       allowOutsideClick: false,

@@ -288,8 +288,18 @@ const ItemModal: FC<Props> = ({formik}) => {
               name='kode_intern'
             />
 
-            <button type='submit' className='btn btn-light-primary fw-bolder w-100 mb-8'>
-              {intl.formatMessage({id: 'SAVE.DATA'})}
+            <button
+              disabled={formik.isSubmitting}
+              type='submit'
+              className='btn btn-light-primary fw-bolder w-100 mb-8'
+            >
+              {!formik.isSubmitting && intl.formatMessage({id: 'SAVE.DATA'})}
+              {formik.isSubmitting && (
+                <span className='indicator-progress' style={{display: 'block'}}>
+                  Please wait...{' '}
+                  <span className='spinner-border spinner-border-sm align-middle ms-2'></span>
+                </span>
+              )}
             </button>
           </div>
         </div>

@@ -11,14 +11,14 @@ import {ILocator, IResponseSocket} from './model/locatorModel'
 import {ShowItemInfoLocatorModal} from './component/showItemInfoLocator'
 import {ShowImageOpnameModal} from '../opname/component/showImageOpname'
 import {KTSVG} from '../../../../_metronic/helpers'
-import {fetchItemByBarcode, setItemLocator} from './redux/locatorCRUD'
+import {endSocketItemLocator, fetchItemByBarcode, setItemLocator} from './redux/locatorCRUD'
 import {IOpnameItem} from '../opname/model/opnameModel'
 import Swal from 'sweetalert2'
 import * as locatorRedux from './redux/locatorRedux'
 import {useDispatch, useSelector} from 'react-redux'
 import {RootState} from '../../../../setup'
 
-import useSocket from '../../../../_metronic/helpers/useSocket'
+import {Socket, io} from 'socket.io-client'
 
 type Props = {
   className: string
@@ -31,7 +31,8 @@ const LocatorWidget: React.FC<Props> = ({className}) => {
   ) as IOpnameItem[]
   const [imageURL, setImageURL] = useState('')
   const intl = useIntl()
-  const socket = useSocket()
+  const serverUrl = process.env.REACT_APP_SOCKET_URL ?? '-'
+  const socket: Socket = io(serverUrl)
   useEffect(() => {
     const swal = Swal
     const prevLocator = localStorage.getItem('PREV-LOCATOR')
@@ -54,8 +55,14 @@ const LocatorWidget: React.FC<Props> = ({className}) => {
         }
       })
     }
+    return () => {
+      const endSocket = async () => {
+        await endSocketItemLocator()
+      }
+      endSocket()
+    }
     // dispatch(locatorRedux.actions.clearItemFounded())
-  }, [dispatch, socket])
+  }, [dispatch]) //eslint-disable-line
 
   const columns: ColumnDescription[] = [
     {
@@ -134,15 +141,17 @@ const LocatorWidget: React.FC<Props> = ({className}) => {
     if (setLocatorResult.status !== 201) {
       swal.fire({
         title: intl.formatMessage({id: 'FAILED'}),
-        text: 'Item Locator failed to initialize, Try again later..',
+        text: intl.formatMessage({id: 'ITEM.LOCATOR.FAILED'}),
         icon: 'error',
       })
       return
     }
     if (response.data) {
       swal.fire({
-        title: 'Pencarian Barang Siap',
-        text: `Silahkan Gunakan Handheld dan pilih menu Item Locator untuk mulai mencari barang\n[Barcode : ${values.kode_barcode}]`,
+        title: intl.formatMessage({id: 'ITEM.LOCATOR.READY'}),
+        text: `${intl.formatMessage({id: 'ITEM.LOCATOR.TEXT'})}\n[${intl.formatMessage({
+          id: 'BARCODE',
+        })} : ${values.kode_barcode}]`,
         icon: 'info',
         allowEscapeKey: false,
         allowOutsideClick: false,

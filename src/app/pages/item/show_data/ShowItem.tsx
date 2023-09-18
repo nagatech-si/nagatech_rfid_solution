@@ -14,9 +14,7 @@ import {Form, Formik, FormikHelpers, FormikProps} from 'formik'
 import * as groupRedux from '../../master/group/redux/GroupRedux'
 import * as typeRedux from '../../master/type/redux/TypeRedux'
 import {putItem} from '../add/redux/ItemCRUD'
-import Swal from 'sweetalert2'
 import hideModal from '../../../../_metronic/helpers/ModalHandler'
-import {DropdownBarangAction} from '../../../../_metronic/layout/components/ActionDropdownBarang'
 import {EditItemModal} from '../add/components/editItemModal'
 import {ShowImageModal} from '../add/components/showImageModal'
 import {KTSVG} from '../../../../_metronic/helpers'
@@ -28,6 +26,7 @@ import {MyOption} from '../../../../_metronic/helpers/FormikReactSelect'
 import {IGroup} from '../../master/group/model/GroupModel'
 import {IType} from '../../master/type/model/TypeModel'
 import {ISearch, initSearchValue} from './model/searchModel'
+import ReactTooltip from 'react-tooltip'
 
 type Props = {
   className: string
@@ -42,6 +41,7 @@ const ShowItemWidget: React.FC<Props> = ({className}) => {
   const [initialValues, setInitialValues] = useState(ItemInitValue)
   useEffect(() => {
     dispatch(toolbar.actions.SetModalToolbarName('EMPTY'))
+    dispatch(toolbar.actions.SetCreateModalActive(false))
     dispatch(toolbar.actions.SetFocusName('nama_barang'))
     dispatch(groupRedux.actions.fetchAllGroup())
     dispatch(typeRedux.actions.fetchAllType())
@@ -130,26 +130,40 @@ const ShowItemWidget: React.FC<Props> = ({className}) => {
       headerAlign: 'center',
       formatter: (_: any, values: IItem, index: number) => {
         return (
-          <DropdownBarangAction
-            DeleteName={intl.formatMessage({id: 'TRAY'}) + ' ' + values.kode_baki}
-            modalName='kt_modal_edit_item'
-            modalDuplicateName='kt_modal_item'
-            modalImageName='kt_modal_gambar_barang'
-            handleUpdate={() => {
-              setInitialValues({
-                ...values,
-                kode_jenis: values.kode_dept,
-                kode_baki: values.kode_toko,
-              })
-            }}
-            handleImage={() => {
-              setInitialValues({
-                ...values,
-                kode_jenis: values.kode_dept,
-                kode_baki: values.kode_toko,
-              })
-            }}
-          />
+          <>
+            <button
+              type='button'
+              data-bs-toggle='modal'
+              data-bs-target={`#kt_modal_edit_item`}
+              data-tip={intl.formatMessage({id: 'UPDATE'})}
+              className='btn btn-warning btn-icon mb-3'
+              onClick={() => {
+                setInitialValues({
+                  ...values,
+                  kode_jenis: values.kode_dept,
+                  kode_baki: values.kode_toko,
+                })
+              }}
+            >
+              <i className='fa fa-file fs-4'></i>
+            </button>
+            <button
+              type='button'
+              data-bs-toggle='modal'
+              data-bs-target={`#kt_modal_gambar_barang`}
+              className='btn btn-primary btn-icon '
+              data-tip={intl.formatMessage({id: 'SHOW.IMAGE'})}
+              onClick={() => {
+                setInitialValues({
+                  ...values,
+                  kode_jenis: values.kode_dept,
+                  kode_baki: values.kode_toko,
+                })
+              }}
+            >
+              <i className='fa fa-image fs-4'></i>
+            </button>
+          </>
         )
       },
     },
@@ -159,14 +173,6 @@ const ShowItemWidget: React.FC<Props> = ({className}) => {
     try {
       await putItem(values)
       hideModal()
-      Swal.fire({
-        title: 'INFORMASI !',
-        text: 'Harap Scan Tag id',
-        icon: 'success',
-        heightAuto: false,
-        confirmButtonText: 'Tutup Tag ID',
-        focusConfirm: true,
-      })
       dispatch(itemRedux.actions.fetchAllItem())
     } catch (error) {
       console.log(error)
@@ -215,6 +221,7 @@ const ShowItemWidget: React.FC<Props> = ({className}) => {
 
   return (
     <>
+      <ReactTooltip />
       <Formik
         initialValues={initialValues}
         validationSchema={itemTypeSchema}

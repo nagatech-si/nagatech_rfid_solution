@@ -118,8 +118,8 @@ const ShatterItemWidget: React.FC<Props> = ({className}) => {
       setshatterItem(response.data)
     }
     Swal.fire({
-      title: 'Hancur Barang Siap',
-      text: 'Silahkan Gunakan Handheld dan pilih menu Hancur Barang untuk mulai menghancur barang',
+      title: intl.formatMessage({id: 'SHATTER.ITEM.READY'}),
+      text: intl.formatMessage({id: 'SHATTER.ITEM.TEXT'}),
       icon: 'info',
       allowEscapeKey: false,
       allowOutsideClick: false,

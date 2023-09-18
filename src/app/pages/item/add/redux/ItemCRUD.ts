@@ -32,7 +32,7 @@ export function fetchReportItem(params: IRequestReportItem) {
 }
 
 export function sendItem(payload: IItem) {
-  return axios.post(POST_ITEM, payload)
+  return axios.post<IItem[]>(POST_ITEM, payload)
 }
 
 export function putItem(payload: IItem) {

@@ -2,7 +2,7 @@
   "name": "amg_catalogue",
   "version": "8.0.31",
   "private": true,
-  "homepage": "https://rebuild-amg-catalogue.netlify.app/",
+  "homepage": "https://rfid-solution.netlify.app/",
   "dependencies": {
     "@formatjs/intl-pluralrules": "^4.0.28",
     "@formatjs/intl-relativetimeformat": "^9.1.7",
@@ -91,7 +91,7 @@
   "scripts": {
     "prestart": "node checkEnv.js",
     "prebuild": "node checkEnv.js",
-    "start": "react-scripts start",
+    "start": "export REACT_APP_API_URL=http://103.150.191.156:2299/api&&REACT_APP_SOCKET_URL=http://103.150.191.156:2299&&react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
