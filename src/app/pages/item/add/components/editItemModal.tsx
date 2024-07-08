@@ -8,6 +8,7 @@ import {useSelector} from 'react-redux'
 import {RootState} from '../../../../../setup'
 import {useIntl} from 'react-intl'
 import {BasicInputFormik} from '../../../../modules/Formik/Component/basicInput'
+import SubmitButton from '../../../../modules/Formik/Button/submit_button'
 
 type Props = {
   formik: FormikProps<IItem>
@@ -65,26 +66,27 @@ const EditItemModal: FC<Props> = ({formik}) => {
               )}
               name='nama_barang'
             />
-            <BasicInputFormik label={intl.formatMessage({id: 'RATE'})} type='number' name='kadar' />
-            <BasicInputFormik label={intl.formatMessage({id: 'PRINT.RATE'})} name='kadar_cetak' />
+            <BasicInputFormik
+              label={intl.formatMessage({id: 'PURCHASE.PRICE'})}
+              type='number'
+              name='harga_beli'
+            />
+            <BasicInputFormik
+              label={intl.formatMessage({id: 'SELLING.PRICE'})}
+              type='number'
+              name='harga_jual'
+            />
+            <BasicInputFormik
+              label={intl.formatMessage({id: 'QUANTITY'})}
+              type='number'
+              name='stock_on_hand'
+            />
             <BasicInputFormik
               label={intl.formatMessage({id: 'INTERNAL.CODE'})}
               name='kode_intern'
             />
 
-            <button
-              disabled={formik.isSubmitting}
-              type='submit'
-              className='btn btn-light-primary fw-bolder w-100 mb-8'
-            >
-              {!formik.isSubmitting && intl.formatMessage({id: 'SAVE.DATA'})}
-              {formik.isSubmitting && (
-                <span className='indicator-progress' style={{display: 'block'}}>
-                  Please wait...{' '}
-                  <span className='spinner-border spinner-border-sm align-middle ms-2'></span>
-                </span>
-              )}
-            </button>
+            <SubmitButton />
           </div>
         </div>
       </div>

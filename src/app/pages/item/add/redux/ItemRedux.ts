@@ -22,6 +22,10 @@ import {BarangIgnore} from '../../../../../setup/enc-ignore/barang-ignore-encryp
 import {ISearch} from '../../show_data/model/searchModel'
 import {IRequestOpnameBarang} from '../../../rfid/opname/model/opnameModel'
 import {fetchAllItemForOpname} from '../../../rfid/opname/redux/opnameCRUD'
+import {
+  startSubmittingAPI,
+  stopSubmittingAPI,
+} from '../../../../../setup/loading_status/LoadingRedux'
 
 const encryptor = new Encryptor()
 export interface ActionWithPayload<T> extends Action {
@@ -185,11 +189,12 @@ function* fetchReportItemSaga({payload: params}: ActionWithPayload<IRequestRepor
 
 function* postItem({payload: sampleItem}: ActionWithPayload<IItem>) {
   try {
+    yield put(startSubmittingAPI())
     var response = yield call(() => sendItem(sampleItem!))
+    yield put(stopSubmittingAPI())
     console.log(response)
 
     let data = encryptor.doDecrypt(response.data, BarangIgnore)
-    console.log(data)
 
     yield put({
       type: actionTypes.fetchAllItemSuccess,
@@ -215,7 +220,9 @@ function* postItem({payload: sampleItem}: ActionWithPayload<IItem>) {
 
 function* deleteItemSaga({payload: sampleItem}: ActionWithPayload<IItem>) {
   try {
+    yield put(startSubmittingAPI())
     yield call(() => deleteItem(sampleItem!))
+    yield put(stopSubmittingAPI())
     const notification: INotification = yield select(getNotification)
     Swal.fire({
       title: notification.success,
@@ -234,8 +241,11 @@ function* deleteItemSaga({payload: sampleItem}: ActionWithPayload<IItem>) {
 
 function* editItemSaga({payload: sampleItem}: ActionWithPayload<IItem>) {
   try {
+    yield put(startSubmittingAPI())
     yield call(() => putItem(sampleItem!))
+    yield put(stopSubmittingAPI())
     const notification: INotification = yield select(getNotification)
+
     Swal.fire({
       title: notification.success,
       text: notification.updateSuccess,
@@ -244,6 +254,7 @@ function* editItemSaga({payload: sampleItem}: ActionWithPayload<IItem>) {
       focusConfirm: true,
     })
     hideModal()
+    yield put(stopSubmittingAPI())
     yield put({
       type: actionTypes.putItemSuccess,
     })
@@ -252,6 +263,7 @@ function* editItemSaga({payload: sampleItem}: ActionWithPayload<IItem>) {
     yield put({type: actionTypes.putItemFailed, payload: {data: null}})
   }
 }
+
 function* setEditItemSaga({payload: sampleItem}: ActionWithPayload<IItem>) {
   try {
     yield put({type: actionTypes.storePrevItemDataFinish, payload: {payload: sampleItem}})

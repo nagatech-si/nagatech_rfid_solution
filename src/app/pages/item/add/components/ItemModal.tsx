@@ -14,6 +14,7 @@ import {IType} from '../../../master/type/model/TypeModel'
 import {ITray} from '../../../master/tray/model/TrayModel'
 import Webcam from 'react-webcam'
 import {toBase64} from '../../../../../_metronic/helpers/imageHelper'
+import SubmitButton from '../../../../modules/Formik/Button/submit_button'
 
 type Props = {
   formik: FormikProps<IItem>
@@ -277,30 +278,22 @@ const ItemModal: FC<Props> = ({formik}) => {
               name='nama_barang'
             />
             <BasicInputFormik
-              label={intl.formatMessage({id: 'ORIGINAL.WEIGHT'})}
+              label={intl.formatMessage({id: 'PURCHASE.PRICE'})}
               type='number'
-              name='berat_asli'
+              name='harga_beli'
             />
-            <BasicInputFormik label={intl.formatMessage({id: 'RATE'})} type='number' name='kadar' />
-            <BasicInputFormik label={intl.formatMessage({id: 'PRINT.RATE'})} name='kadar_cetak' />
             <BasicInputFormik
-              label={intl.formatMessage({id: 'INTERNAL.CODE'})}
-              name='kode_intern'
+              label={intl.formatMessage({id: 'SELLING.PRICE'})}
+              type='number'
+              name='harga_jual'
+            />
+            <BasicInputFormik
+              label={intl.formatMessage({id: 'QUANTITY'})}
+              type='number'
+              name='stock_on_hand'
             />
 
-            <button
-              disabled={formik.isSubmitting}
-              type='submit'
-              className='btn btn-light-primary fw-bolder w-100 mb-8'
-            >
-              {!formik.isSubmitting && intl.formatMessage({id: 'SAVE.DATA'})}
-              {formik.isSubmitting && (
-                <span className='indicator-progress' style={{display: 'block'}}>
-                  Please wait...{' '}
-                  <span className='spinner-border spinner-border-sm align-middle ms-2'></span>
-                </span>
-              )}
-            </button>
+            <SubmitButton />
           </div>
         </div>
       </div>

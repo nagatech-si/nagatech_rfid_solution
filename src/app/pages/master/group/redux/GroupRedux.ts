@@ -11,6 +11,10 @@ import Swal from 'sweetalert2'
 import hideModal from '../../../../../_metronic/helpers/ModalHandler'
 import {INotification} from '../../../../../setup/notification/Notification'
 import {RootState} from '../../../../../setup'
+import {
+  startSubmittingAPI,
+  stopSubmittingAPI,
+} from '../../../../../setup/loading_status/LoadingRedux'
 
 const encryptor = new Encryptor()
 export interface ActionWithPayload<T> extends Action {
@@ -122,9 +126,9 @@ function* fetchGroup() {
 function* postGroup({payload: sampleType}: ActionWithPayload<IGroup>) {
   try {
     const notification: INotification = yield select(getNotification)
-
+    yield put(startSubmittingAPI())
     yield call(() => sendGroup(sampleType!))
-
+    yield put(stopSubmittingAPI())
     Swal.fire({
       title: notification.success,
       text: notification.addSuccess,
@@ -144,7 +148,9 @@ function* postGroup({payload: sampleType}: ActionWithPayload<IGroup>) {
 
 function* deleteGroupSaga({payload: sampleType}: ActionWithPayload<IGroup>) {
   try {
+    yield put(startSubmittingAPI())
     yield call(() => deleteGroup(sampleType!))
+    yield put(stopSubmittingAPI())
     const notification: INotification = yield select(getNotification)
     Swal.fire({
       title: notification.success,
@@ -164,7 +170,9 @@ function* deleteGroupSaga({payload: sampleType}: ActionWithPayload<IGroup>) {
 
 function* editGroupSaga({payload: sampleType}: ActionWithPayload<IGroup>) {
   try {
+    yield put(startSubmittingAPI())
     yield call(() => putGroup(sampleType!))
+    yield put(stopSubmittingAPI())
     const notification: INotification = yield select(getNotification)
     Swal.fire({
       title: notification.success,

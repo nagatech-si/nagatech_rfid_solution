@@ -13,6 +13,7 @@ export interface IItem {
   kadar: number
   kadar_cetak: string
   harga_jual: number
+  harga_beli: number
   kode_gudang: string
   stock_on_hand?: number
   kode_intern: string
@@ -62,12 +63,13 @@ export const ItemInitValue: IItem = {
   berat: 0,
   berat_asli: 0,
   kadar: 0,
-  kadar_cetak: '',
+  kadar_cetak: '0',
   harga_jual: 0,
+  harga_beli: 0,
   kode_gudang: '',
   stock_on_hand: 0,
   kode_intern: 'LG',
-  gambar_barang: '',
+  gambar_barang: '-',
 }
 
 export type IIResponseSocketTag = {

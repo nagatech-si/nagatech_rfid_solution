@@ -56,6 +56,15 @@ const onResponse = (response: AxiosResponse): AxiosResponse => {
 
 const onResponseError = (error: AxiosError): Promise<AxiosError> => {
   console.error(`[response error] [${JSON.stringify(error)}]`)
+  console.log(error.response?.status)
+
+  if (error.response?.status === 401) {
+    //TODO: handle when 401
+    localStorage.removeItem('token')
+    localStorage.removeItem('isLogin')
+    localStorage.removeItem('persist:v100-amg_catalogue-auth')
+    window.location.reload()
+  }
   if (error.response) {
     switch (error.response.status) {
       case 404:

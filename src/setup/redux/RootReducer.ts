@@ -25,9 +25,13 @@ import * as soldItemRedux from '../../app/pages/rfid/sold_item/redux/soldItemRed
 import * as shatterItemRedux from '../../app/pages/rfid/shatter_item/redux/shatterItemRedux'
 import * as moveItemRedux from '../../app/pages/rfid/move_item/redux/moveItemRedux'
 
+//loading
+import * as loadingStatusRedux from '../loading_status/LoadingRedux'
+
 export const rootReducer = combineReducers({
   auth: auth.reducer,
   toolbar: toolbar.reducer,
+  loading: loadingStatusRedux.reducer,
   group: groupRedux.reducer,
   type: typeRedux.reducer,
   profile: profile.reducer,

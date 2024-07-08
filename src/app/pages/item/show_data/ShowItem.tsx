@@ -13,8 +13,6 @@ import {Form, Formik, FormikHelpers, FormikProps} from 'formik'
 
 import * as groupRedux from '../../master/group/redux/GroupRedux'
 import * as typeRedux from '../../master/type/redux/TypeRedux'
-import {putItem} from '../add/redux/ItemCRUD'
-import hideModal from '../../../../_metronic/helpers/ModalHandler'
 import {EditItemModal} from '../add/components/editItemModal'
 import {ShowImageModal} from '../add/components/showImageModal'
 import {KTSVG} from '../../../../_metronic/helpers'
@@ -27,6 +25,7 @@ import {IGroup} from '../../master/group/model/GroupModel'
 import {IType} from '../../master/type/model/TypeModel'
 import {ISearch, initSearchValue} from './model/searchModel'
 import ReactTooltip from 'react-tooltip'
+import useNotification from '../../../../setup/notification/Notification'
 
 type Props = {
   className: string
@@ -39,6 +38,7 @@ const ShowItemWidget: React.FC<Props> = ({className}) => {
   const typeDatas: IType[] = useSelector<RootState>(({type}) => type.data) as IType[]
   const trayDatas: IItem[] = useSelector<RootState>(({tray}) => tray.data) as IItem[]
   const [initialValues, setInitialValues] = useState(ItemInitValue)
+  const notifications = useNotification()
   useEffect(() => {
     dispatch(toolbar.actions.SetModalToolbarName('EMPTY'))
     dispatch(toolbar.actions.SetCreateModalActive(false))
@@ -46,7 +46,8 @@ const ShowItemWidget: React.FC<Props> = ({className}) => {
     dispatch(groupRedux.actions.fetchAllGroup())
     dispatch(typeRedux.actions.fetchAllType())
     dispatch(itemRedux.actions.fetchAllItem())
-  }, [dispatch])
+    dispatch(groupRedux.actions.setNotification(notifications))
+  }, [dispatch, notifications])
   const intl = useIntl()
   const columns: ColumnDescription[] = [
     {
@@ -171,8 +172,8 @@ const ShowItemWidget: React.FC<Props> = ({className}) => {
 
   const handleSubmit = async (values: IItem, actions: FormikHelpers<IItem>) => {
     try {
-      await putItem(values)
-      hideModal()
+      actions.setSubmitting(true)
+      dispatch(itemRedux.actions.editItem(values))
       dispatch(itemRedux.actions.fetchAllItem())
     } catch (error) {
       console.log(error)
@@ -184,13 +185,18 @@ const ShowItemWidget: React.FC<Props> = ({className}) => {
     kode_jenis: Yup.string().required(intl.formatMessage({id: 'CANT.BE.EMPTY'})),
     kode_baki: Yup.string().required(intl.formatMessage({id: 'CANT.BE.EMPTY'})),
     nama_barang: Yup.string().required(intl.formatMessage({id: 'CANT.BE.EMPTY'})),
-    berat_asli: Yup.number()
+    berat_asli: Yup.number().default(1),
+    kadar: Yup.number().default(1),
+    kadar_cetak: Yup.string().default('0'),
+    stock_on_hand: Yup.number()
       .required(intl.formatMessage({id: 'CANT.BE.EMPTY'}))
-      .min(0.001, intl.formatMessage({id: 'GREATER.THAN'}, {number: 0.001})),
-    kadar: Yup.number()
+      .default(1),
+    harga_beli: Yup.number()
       .required(intl.formatMessage({id: 'CANT.BE.EMPTY'}))
-      .min(1, intl.formatMessage({id: 'GREATER.THAN'}, {number: 1})),
-    kadar_cetak: Yup.string().required(intl.formatMessage({id: 'CANT.BE.EMPTY'})),
+      .default(1),
+    harga_jual: Yup.number()
+      .required(intl.formatMessage({id: 'CANT.BE.EMPTY'}))
+      .default(1),
     kode_intern: Yup.string().required(intl.formatMessage({id: 'CANT.BE.EMPTY'})),
   })
 

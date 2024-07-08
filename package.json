@@ -91,7 +91,7 @@
   "scripts": {
     "prestart": "node checkEnv.js",
     "prebuild": "node checkEnv.js",
-    "start": "export REACT_APP_API_URL=http://103.150.191.156:2299/api&&REACT_APP_SOCKET_URL=http://103.150.191.156:2299&&react-scripts start",
+    "start": "export REACT_APP_API_URL=http://192.168.0.17:2299/api&&REACT_APP_SOCKET_URL=http://192.168.0.17:2299&&react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",

@@ -41,6 +41,9 @@ export function putItem(payload: IItem) {
     kadar: payload.kadar,
     kadar_cetak: payload.kadar_cetak,
     kode_intern: payload.kode_intern,
+    harga_beli: payload.harga_beli,
+    harga_jual: payload.harga_jual,
+    stock_on_hand: payload.stock_on_hand,
     gambar_barang: payload.gambar_barang,
   })
 }

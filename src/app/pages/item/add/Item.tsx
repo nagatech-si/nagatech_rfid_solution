@@ -21,13 +21,14 @@ import {MyOption} from '../../../../_metronic/helpers/FormikReactSelect'
 import {KTSVG} from '../../../../_metronic/helpers'
 
 import {b64toBlob} from '../../../../_metronic/helpers/imageHelper'
-import {putItem, sendItem} from './redux/ItemCRUD'
+import {sendItem} from './redux/ItemCRUD'
 import Swal from 'sweetalert2'
 import hideModal from '../../../../_metronic/helpers/ModalHandler'
 import {ShowImageModal} from './components/showImageModal'
 import {EditItemModal} from './components/editItemModal'
 import {prosesTagId} from '../../../../_metronic/helpers/auto_tag'
 import {Socket, io} from 'socket.io-client'
+import {startSubmittingAPI, stopSubmittingAPI} from '../../../../setup/loading_status/LoadingRedux'
 
 type Props = {
   className: string
@@ -103,13 +104,13 @@ const ItemWidget: React.FC<Props> = ({className}) => {
       sort: true,
     },
     {
-      dataField: 'berat',
-      text: intl.formatMessage({id: 'WEIGHT'}),
+      dataField: 'harga_beli',
+      text: intl.formatMessage({id: 'PURCHASE.PRICE'}),
       sort: true,
     },
     {
-      dataField: 'kadar_cetak',
-      text: intl.formatMessage({id: 'PRINT.RATE'}),
+      dataField: 'harga_jual',
+      text: intl.formatMessage({id: 'SELLING.PRICE'}),
       sort: true,
     },
     {
@@ -163,19 +164,24 @@ const ItemWidget: React.FC<Props> = ({className}) => {
   const handleSubmit = async (values: IItem, actions: FormikHelpers<IItem>) => {
     try {
       if (editMode) {
-        await putItem(values)
+        dispatch(itemRedux.actions.editItem(values))
         hideModal()
       } else {
-        if (!duplicate) {
-          var publicURL = await uploadImage(
-            b64toBlob(values.gambar_barang),
-            `barang/${values.kadar_cetak + values.kadar + values.kode_group}.png`
-          )
-          values.gambar_barang = publicURL
+        dispatch(startSubmittingAPI())
+        if (values.gambar_barang !== '-') {
+          if (!duplicate) {
+            var publicURL = await uploadImage(
+              b64toBlob(values.gambar_barang),
+              `barang/${values.kadar_cetak + values.kadar + values.kode_group}.png`
+            )
+            values.gambar_barang = publicURL
+          }
         }
         values.tag_id = '-'
+
         var response = await sendItem(values)
         dispatch(itemRedux.actions.saveItem(response.data))
+        dispatch(stopSubmittingAPI())
         prosesTagId(
           response.data[response.data.length - 1].kode_barcode ?? '-',
           socket,
@@ -210,13 +216,18 @@ const ItemWidget: React.FC<Props> = ({className}) => {
     kode_jenis: Yup.string().required(intl.formatMessage({id: 'CANT.BE.EMPTY'})),
     kode_baki: Yup.string().required(intl.formatMessage({id: 'CANT.BE.EMPTY'})),
     nama_barang: Yup.string().required(intl.formatMessage({id: 'CANT.BE.EMPTY'})),
-    berat_asli: Yup.number()
+    berat_asli: Yup.number().default(1),
+    kadar: Yup.number().default(1),
+    kadar_cetak: Yup.string().default('0'),
+    stock_on_hand: Yup.number()
       .required(intl.formatMessage({id: 'CANT.BE.EMPTY'}))
-      .min(0.001, intl.formatMessage({id: 'GREATER.THAN'}, {number: 0.001})),
-    kadar: Yup.number()
+      .default(1),
+    harga_beli: Yup.number()
       .required(intl.formatMessage({id: 'CANT.BE.EMPTY'}))
-      .min(1, intl.formatMessage({id: 'GREATER.THAN'}, {number: 1})),
-    kadar_cetak: Yup.string().required(intl.formatMessage({id: 'CANT.BE.EMPTY'})),
+      .default(1),
+    harga_jual: Yup.number()
+      .required(intl.formatMessage({id: 'CANT.BE.EMPTY'}))
+      .default(1),
     kode_intern: Yup.string().required(intl.formatMessage({id: 'CANT.BE.EMPTY'})),
   })
 

@@ -362,5 +362,7 @@
   "SHATTER.ITEM.READY": "Hancur Barang Siap",
   "SHATTER.ITEM.TEXT": "Silakan gunakan Handheld dan pilih menu Hancur Barang untuk mulai menghancurkan barang",
   "SOLD.ITEM.READY": "Penjualan Barang Siap",
-  "SOLD.ITEM.TEXT": "Silakan gunakan Handheld dan pilih menu Penjualan Barang untuk mulai menjual barang"
+  "SOLD.ITEM.TEXT": "Silakan gunakan Handheld dan pilih menu Penjualan Barang untuk mulai menjual barang",
+  "SELLING.PRICE": "Harga Jual",
+  "PURCHASE.PRICE": "Harga Beli"
 }

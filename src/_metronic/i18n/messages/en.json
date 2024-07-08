@@ -362,5 +362,7 @@
   "SHATTER.ITEM.READY": "Shatter Item Ready",
   "SHATTER.ITEM.TEXT": "Please use Handheld and select the Hancur Barang menu to start destroying items",
   "SOLD.ITEM.READY": "Selling Item Ready",
-  "SOLD.ITEM.TEXT": "Please use Handheld and select the Penjualan Barang menu to start selling items"
+  "SOLD.ITEM.TEXT": "Please use Handheld and select the Penjualan Barang menu to start selling items",
+   "SELLING.PRICE": "Selling Price",
+  "PURCHASE.PRICE": "Purchase Price"
 }

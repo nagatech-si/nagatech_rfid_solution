@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, {FC} from 'react'
-import {KTSVG} from '../../../../../_metronic/helpers'
+import {KTSVG, toAbsoluteUrl} from '../../../../../_metronic/helpers'
 import {FormikProps} from 'formik'
 import {IItem} from '../model/ItemModel'
 import {useIntl} from 'react-intl'
@@ -28,7 +28,15 @@ const ShowImageModal: FC<Props> = ({formik}) => {
             <div className='text-center mb-5'>
               <h1 className='mb-3'>{intl.formatMessage({id: 'SHOW.IMAGE.ITEM'})}</h1>
             </div>
-            <img className='col-lg-12 mb-3' alt='imageTaken' src={formik.values.gambar_barang} />
+            <img
+              className='col-lg-12 mb-3'
+              alt='imageTaken'
+              src={formik.values.gambar_barang}
+              onError={({currentTarget}) => {
+                currentTarget.onerror = null // prevents looping
+                currentTarget.src = toAbsoluteUrl('/media/misc/placeholder-image.jpg')
+              }}
+            />
           </div>
         </div>
       </div>

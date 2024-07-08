@@ -27,7 +27,7 @@ const storage = getStorage(app)
 export const uploadImage = async (file: Blob | ArrayBuffer, fileName: string) => {
   try {
     // Upload image.
-    const imageRef = ref(storage, `AMG_CATALOGUE/${fileName}`)
+    const imageRef = ref(storage, `RFID-SOLUTION/${fileName}`)
     const uploadImage = await uploadBytes(imageRef, file)
 
     // Create file metadata.
@@ -49,7 +49,7 @@ export const uploadImage = async (file: Blob | ArrayBuffer, fileName: string) =>
 export const deleteImage = async (fileName: string) => {
   try {
     // Upload image.
-    const imageRef = ref(storage, `AMG_CATALOGUE/${fileName}`)
+    const imageRef = ref(storage, `RFID-SOLUTION/${fileName}`)
     await deleteObject(imageRef)
     return true
   } catch (error) {

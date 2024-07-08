@@ -360,5 +360,7 @@
   "SHATTER.ITEM.READY": "破碎物品准备好了",
   "SHATTER.ITEM.TEXT": "请使用手持设备并选择 Hancur Barang 菜单开始销毁物品",
   "SOLD.ITEM.READY": "销售物品准备好了",
-  "SOLD.ITEM.TEXT": "请使用手持设备并选择 Penjualan Barang 菜单开始销售物品"
+  "SOLD.ITEM.TEXT": "请使用手持设备并选择 Penjualan Barang 菜单开始销售物品",
+    "SELLING.PRICE": "售价",
+  "PURCHASE.PRICE": "购买价格"
 }
